@@ -8,6 +8,10 @@ $response = file_get_contents($detail_url);
 
 $data = json_decode($response);
 
+$watch_response = file_get_contents("https://api.themoviedb.org/3/movie/" . $id . "/watch/providers?api_key=2005b3a7fc676c3bd69383469a281eff&language=en-US");
+
+$providers = json_decode($watch_response);
+
 include("./utils.php");
 $backdrop = "";
 if ($data->backdrop_path) {
@@ -15,6 +19,46 @@ if ($data->backdrop_path) {
 } else {
     $backdrop = "https://source.unsplash.com/J39X2xX_8CQ/1920x1080";
 }
+
+
+function generateProvider($p)
+{
+    $logo = getPoster($p->logo_path, "original");
+
+    switch ($p->provider_id) {
+        case "9":
+            return <<< "EOT"
+                <button class="bg-blue-700 px-1 py-1 font-semibold text-white inline-flex items-center space-x-2 rounded h-16">
+                    <img src="$logo" class="h-full w-auto" />
+                </button>
+            EOT;
+            break;
+        case "337":
+            return <<< "EOT"
+                <button class="bg-blue-500 px-1 py-1 font-semibold text-white inline-flex items-center space-x-2 rounded h-16">
+                    <img src="$logo" class="h-full w-auto" />
+                </button>
+            EOT;
+            break;
+        case "384":
+            return <<< "EOT"
+                <button class="bg-purple-500 px-1 py-1 font-semibold text-white inline-flex items-center space-x-2 rounded h-16">
+                    <img src="$logo" class="h-full w-auto" />
+                </button>
+            EOT;
+            break;
+        case "8":
+            return <<< "EOT"
+                <button class="bg-red-500 px-1 py-1 font-semibold text-white inline-flex items-center space-x-2 rounded h-16">
+                    <img src="$logo" class="h-full w-auto" />
+                </button>
+            EOT;
+            break;
+        default:
+            break;
+    }
+}
+
 ?>
 
 
@@ -37,7 +81,7 @@ if ($data->backdrop_path) {
     <?php include("../navbar.php"); ?>
     <main>
         <div class="h-full container mx-auto grid grid-cols-1 md:grid-cols-3 justify-evenly">
-            <div class="col-span-1 md:col-span-2">
+            <div class="col-span-1 md:col-span-2 sm:flex sm:justify-center">
                 <?php echo "<img class=\"rounded-xl shadow-xl\" src=\"" . getPoster($data->poster_path) . "\" />"; ?>
             </div>
             <div class="flex flex-col">
@@ -63,6 +107,20 @@ if ($data->backdrop_path) {
                     }
                     ?>
                 </span>
+                <br />
+                <?php
+                if ($providers->results->US) {
+                    if ($providers->results->US->flatrate) {
+                        echo "<h5 class=\"text-lg\">Watch Here (courtesy of JustWatch)</h5>";
+                        echo "<div>";
+                        foreach ($providers->results->US->flatrate as $pro) {
+                            echo generateProvider($pro);
+                        }
+                        echo "</div>";
+                    }
+                }
+                ?>
+
                 <br />
                 <?php
                 function isTrailer($e)

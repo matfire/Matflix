@@ -43,7 +43,7 @@ function generateFrontPagination($current, $total)
 
 <body>
     <?php include("./navbar.php"); ?>
-    <main>
+    <main class="">
         <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-5 container mx-auto">
             <?php
             if ($trending_data) {
@@ -52,7 +52,7 @@ function generateFrontPagination($current, $total)
             }
             ?>
         </div>
-        <div class="flex justify-center text-xl mt-2">
+        <div class="flex justify-center text-xl mt-2 mb-2">
             <?php echo generateBackPagination($page); ?> &MediumSpace; Page <?php echo $page; ?> of <?php echo $trending_data->total_pages ?> &MediumSpace; <?php echo generateFrontPagination($page, $trending_data->total_pages); ?>
         </div>
     </main>

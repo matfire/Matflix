@@ -10,6 +10,8 @@ html, body {
 body {
     display: flex;
     flex-direction: column;
+    background-color: #002A32;
+    color: white;
 }
 
 
@@ -23,4 +25,14 @@ main {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+}
+
+.dark-primary {
+    background-color: #88a1a7;
+    color: white;
+}
+
+.dark-secondary {
+    background-color: #1e3149;
+    color:white;
 }
