@@ -4,11 +4,11 @@
     </div>
     <div class="flex items-center">
         <nav class="mr-10   ">
-            <a class="mr-2" href="/">Trending</a>
-            <a href="/upcoming.php">Upcoming</a>
+            <a class="mr-2" href="/movies/trending.php">Trending</a>
+            <a href="/movies/upcoming.php">Upcoming</a>
         </nav>
         <div class="w-56 my-2">
-            <form action="/movie/search.php" method="POST">
+            <form action="/movies/search.php" method="POST">
                 <div class="relative text-gray-600 ">
                     <input type="text" name="search" id="search" placeholder="Search" class="h-10 pl-4 pr-10 py-2 rounded-full text-sm focus:outline-none">
                     <button type="submit" class="absolute right-0 top-0 mt-3 mr-6">
