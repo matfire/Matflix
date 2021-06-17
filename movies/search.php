@@ -1,12 +1,12 @@
 <?php
-$search = $_POST["search"];
+$search = $_GET["search"];
 
 include("./utils.php");
 
 
 $search_movies = "https://api.themoviedb.org/3/search/movie?api_key=2005b3a7fc676c3bd69383469a281eff&language=en-US&page=1&query=" . $search;
 
-$response = request(get_url("/search/movie", ["query=$search"]));
+$response = request(get_url("search/movie", ["query=$search"]));
 $search_data = json_decode($response);
 
 
