@@ -1,18 +1,15 @@
 <?php
+include("./utils.php");
 $id = $_GET["id"];
 
-
-$detail_url = "https://api.themoviedb.org/3/movie/" . $id . "?api_key=2005b3a7fc676c3bd69383469a281eff&language=en-US&append_to_response=videos,images,recommendations";
-
-$response = file_get_contents($detail_url);
+$response = request(get_url("movie/$id", ["append_to_response=videos,images,recommendations"]));
 
 $data = json_decode($response);
 
-$watch_response = file_get_contents("https://api.themoviedb.org/3/movie/" . $id . "/watch/providers?api_key=2005b3a7fc676c3bd69383469a281eff&language=en-US");
+$watch_response = request(get_url("movie/$id/watch/providers"));
 
 $providers = json_decode($watch_response);
 
-include("./utils.php");
 $backdrop = "";
 if ($data->backdrop_path) {
     $backdrop = getPoster($data->backdrop_path, "w1280");
@@ -81,7 +78,7 @@ function generateProvider($p)
                 </span>
                 <br />
                 <?php
-                if ($providers->results->US) {
+                if ($providers->results->US->flatrate) {
                     if ($providers->results->US->flatrate) {
                         echo "<h5 class=\"text-lg\">Watch Here (courtesy of JustWatch)</h5>";
                         echo "<div>";

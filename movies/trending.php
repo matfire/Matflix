@@ -1,4 +1,5 @@
 <?php
+include("./utils.php");
 
 $page = $_GET["page"];
 
@@ -6,12 +7,9 @@ if (!$page) {
     $page = 1;
 }
 
-$trending_movies = "https://api.themoviedb.org/3/movie/popular?api_key=2005b3a7fc676c3bd69383469a281eff&language=en-US&page=" . $page;
-
-$response = file_get_contents($trending_movies);
+$response = request(get_url("movie/popular", ["page=$page"]));
 $trending_data = json_decode($response);
 
-include("./utils.php");
 
 function generateBackPagination($current)
 {

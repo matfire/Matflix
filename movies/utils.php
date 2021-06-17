@@ -1,5 +1,20 @@
 <?php
 
+function get_url($endpoint, $query = [])
+{
+
+    return "https://api.themoviedb.org/3/" . $endpoint . "?api_key=2005b3a7fc676c3bd69383469a281eff" . (count($query) > 0 ? "&" . join("&", $query) : "");
+}
+
+function request($url)
+{
+    $ch = curl_init($url);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    $response = curl_exec($ch);
+    curl_close($ch);
+    return $response;
+}
+
 function getPoster($path, $size = "w500")
 {
     return "https://image.tmdb.org/t/p/" . $size . "/" . $path;
