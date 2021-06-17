@@ -45,7 +45,7 @@ function generateProvider($p)
     <link rel="stylesheet" href="/index.css">
     <link rel="stylesheet" href="/movieDetails.css">
     <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
 
 </head>
 
@@ -53,10 +53,10 @@ function generateProvider($p)
     <?php include("../navbar.php"); ?>
     <main>
         <div class="h-full container mx-auto grid grid-cols-1 md:grid-cols-3 justify-evenly">
-            <div class="col-span-1 md:col-span-2 sm:flex sm:justify-center">
-                <?php echo "<img class=\"rounded-xl shadow-xl\" src=\"" . getPoster($data->poster_path) . "\" />"; ?>
+            <div class="col-span-1 md:col-span-2 sm:flex sm:justify-center" id="posterWrapper">
+                <?php echo "<img class=\"rounded-2xl shadow-xl transition transform hover:scale-105\" src=\"" . getPoster($data->poster_path) . "\" />"; ?>
             </div>
-            <div class="flex flex-col">
+            <div class="flex flex-col" id="movieDetails">
                 <h1 class="text-2xl mb-5"><?php echo $data->original_title ?></h1>
                 <p><?php echo $data->overview ?></p>
                 <br />
@@ -114,20 +114,42 @@ function generateProvider($p)
                 }
                 ?>
             </div>
-            <div class="col-span-1 md:col-span-3 mt-12">
-                <h5 class="text-2xl text-center mb-5">Recommendations</h5>
-                <div class="grid grid-cols-1 md:grid-cols-3 justify-evenly gap-5">
-                    <?php
-                    $recs = array_slice($data->recommendations->results, 0, 3);
-                    foreach ($recs as $r) {
-                        echo generateMovieCard($r);
-                    }
-                    ?>
-                </div>
-            </div>
+            <?php
+            if ($data->recommendations->results) {
+                echo '<div class="col-span-1 md:col-span-3 mt-12">';
+                echo '<h5 class="text-2xl text-center mb-5">Recommendations</h5>';
+                echo '<div class="grid grid-cols-1 md:grid-cols-3 justify-evenly gap-5" id="movieRecommendations">';
+                $recs = array_slice($data->recommendations->results, 0, 3);
+                foreach ($recs as $r) {
+                    echo generateMovieCard($r);
+                }
+                echo '</div>';
+                echo '</div>';
+            }
+            ?>
         </div>
     </main>
     <?php include("../footer.php"); ?>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.7.0/gsap.min.js"></script>
+    <script>
+        gsap.from("#posterWrapper", {
+            duration: 1,
+            x: -100,
+            opacity: 0
+        })
+        gsap.from(document.getElementById("movieDetails").children, {
+            opacity: 0,
+            stagger: 0.1,
+            delay: 0.5
+        })
+        gsap.from(document.getElementById("movieRecommendations").children, {
+            opacity: 0,
+            y: -100,
+            ease: "sine",
+            stagger: 0.1,
+            delay: 2
+        })
+    </script>
 </body>
 
 </html>

@@ -1,4 +1,4 @@
-<header class="flex items-center justify-between mb-5 shadow-lg dark-secondary">
+<header class="flex items-center justify-between mb-10 shadow-lg dark-secondary">
     <div class="ml-5">
         <a href="/">MatFlix</a>
     </div>

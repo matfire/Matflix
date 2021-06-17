@@ -14,7 +14,10 @@
 <body>
     <?php include("./navbar.php") ?>
     <main>
-        
+        <div class="flex justify-center items-center h-full w-full flex-col">
+            <h1>MATFLIX</h1>
+            <h4>Built using PHP and TheMovieDB.org</h4>
+        </div>
     </main>
     <?php include("./footer.php") ?>
 </body>

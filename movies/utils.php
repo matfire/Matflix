@@ -16,7 +16,7 @@ function generateMovieCard($m)
     }
 
     $card = <<< "EOT"
-    <div class="bg-gray-100 m-auto w-full h-96 bg-cover shadow-xl rounded-lg" style="background-image:url('$backdrop')" >
+    <div class="bg-gray-100 m-auto w-full h-96 bg-cover shadow-xl rounded-lg transition transform hover:scale-105" style="background-image:url('$backdrop')" >
         <div class="flex flex-row items-end h-full w-full">
             <div class="flex flex-col w-full pb-3 pt-10 px-3 bg-gradient-to-t from-black text-gray-200">
                 <h3 class="text-base font-bold leading-5 uppercase">$m->title</h3>

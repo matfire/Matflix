@@ -44,7 +44,8 @@ function generateFrontPagination($current, $total)
 <body>
     <?php include("../navbar.php"); ?>
     <main class="">
-        <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-5 container mx-auto">
+        <h1 class="text-center mb-5">Trending</h1>
+        <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-5 container mx-auto" id="movies">
             <?php
             if ($trending_data) {
                 foreach ($trending_data->results as $movie)
