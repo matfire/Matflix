@@ -1,3 +1,13 @@
+<?php
+
+include("./utils.php");
+include("./alerts.php");
+$alert = NULL;
+
+if ($_GET["type"] && $_GET["message"])
+    $alert = generateAlert($_GET["message"], $_GET["type"]);
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -14,6 +24,11 @@
 <body>
     <?php include("./navbar.php") ?>
     <main>
+        <?php
+        if ($alert) {
+            echo showAlert($alert);
+        }
+        ?>
         <div class="flex justify-center items-center h-full w-full flex-col">
             <h1>MATFLIX</h1>
             <h4>Built using PHP and TheMovieDB.org</h4>

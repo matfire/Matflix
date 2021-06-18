@@ -3,9 +3,16 @@
         <a href="/">MatFlix</a>
     </div>
     <div class="flex items-center">
-        <nav class="mr-10   ">
+        <nav class="mr-10">
             <a class="mr-2" href="/movies/trending.php">Trending</a>
-            <a href="/movies/upcoming.php">Upcoming</a>
+            <a href="/movies/upcoming.php" class="mr-2">Upcoming</a>
+            <?php
+            if (isset($_SESSION["token"])) {
+                echo "<a href=\"/auth/out.php\">Sign Out</a>";
+            } else {
+                echo "<a href=\"/auth/login.php\">Sign In</a>";
+            }
+            ?>
         </nav>
         <div class="w-56 my-2">
             <form action="/movies/search.php" method="GET">

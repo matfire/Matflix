@@ -1,7 +1,7 @@
 <?php
 $search = $_GET["search"];
 
-include("./utils.php");
+include("../utils.php");
 
 
 $search_movies = "https://api.themoviedb.org/3/search/movie?api_key=2005b3a7fc676c3bd69383469a281eff&language=en-US&page=1&query=" . $search;

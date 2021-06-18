@@ -1,5 +1,5 @@
 <?php
-include("./utils.php");
+include("../utils.php");
 $id = $_GET["id"];
 
 $response = request(get_url("movie/$id", ["append_to_response=videos,images,recommendations"]));
