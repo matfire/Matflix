@@ -18,6 +18,9 @@ function request($url)
 
 function getPoster($path, $size = "w500")
 {
+    if (strncmp($path, "/http", 5) == 0) {
+        return ltrim($path, '/');
+    }
     return "https://image.tmdb.org/t/p/" . $size . "/" . $path;
 }
 
@@ -54,6 +57,42 @@ function generateMovieCard($m)
     EOT;
 
     return $card;
+}
+
+
+function generateReview($r)
+{
+
+    $profile_pic = $r->author_details->avatar_path ? getPoster($r->author_details->avatar_path, "h632") : "https://source.unsplash.com/VX0bsbyBxpM/1920x1080";
+    $name = NULL;
+
+    if ($r->author_details->username)
+        $name = $r->author_details->username;
+    else if ($r->author_details->name)
+        $name = $r->author_details->name;
+    else
+        $name = "Anonymous";
+
+    return <<< "EOT"
+        <div class="flex flex-col mt-5 mb-5 rounded-md">
+            <div class="w-full flex items-center mb-5">
+                <div class="">
+                    <img class="rounded-full w-24 h-24 transition transform hover:scale-105" src="$profile_pic" />
+                </div>
+                <div class="ml-4 flex flex-col">
+                    <h5 class="text-xl">$name</h5>
+                </div>
+            </div>
+            <div class="w-full">
+                <div class="truncation">
+                    $r->content
+                </div>
+                <div class="mt-5">
+                    <a class="bg-blue-500 px-5 py-3 text-sm shadow-sm font-medium tracking-wider text-blue-100 rounded-full hover:shadow-lg hover:bg-blue-600" href="$r->url" target="_blank" rel="noopener noreferrer">Read More</a>
+                </div>
+            </div>
+        </div>
+    EOT;
 }
 
 function generateVideoOutput($e)
