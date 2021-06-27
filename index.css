@@ -38,3 +38,13 @@ main {
     background-color: #1e3149;
     color:white;
 }
+
+.truncation {
+    overflow: hidden;
+    text-overflow:clip;
+    display: -webkit-box;
+    line-height: 16px;     /* fallback */
+    max-height: 80px;      /* fallback */
+    -webkit-line-clamp: 5; /* number of lines to show */
+    -webkit-box-orient: vertical;
+}
