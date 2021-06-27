@@ -7,7 +7,8 @@
             <a class="mr-2" href="/movies/trending.php">Trending</a>
             <a href="/movies/upcoming.php" class="mr-2">Upcoming</a>
             <?php
-            if (isset($_SESSION["token"])) {
+            if (isset($_SESSION["id"])) {
+                echo "<a class=\"mr-2\" href=\"/watch.php?type=movie\">Watchlist</a>";
                 echo "<a href=\"/auth/out.php\">Sign Out</a>";
             } else {
                 echo "<a href=\"/auth/login.php\">Sign In</a>";
