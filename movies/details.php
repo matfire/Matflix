@@ -2,7 +2,7 @@
 include("../utils.php");
 $id = $_GET["id"];
 
-$response = request(get_url("movie/$id", ["append_to_response=videos,images,recommendations"]));
+$response = request(get_url("movie/$id", ["append_to_response=videos,images,recommendations,reviews"]));
 
 $data = json_decode($response);
 
@@ -28,6 +28,13 @@ function generateProvider($p)
     EOT;
 }
 
+include("../alerts.php");
+$alert = NULL;
+
+if ($_GET["type"] && $_GET["message"])
+    $alert = generateAlert($_GET["message"], $_GET["type"]);
+
+
 ?>
 
 
@@ -42,19 +49,29 @@ function generateProvider($p)
     <link rel="stylesheet" href="/index.css">
     <link rel="stylesheet" href="/movieDetails.css">
     <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
-
 </head>
 
 <body>
     <?php include("../navbar.php"); ?>
     <main>
+        <?php
+        if ($alert) {
+            echo showAlert($alert);
+        }
+        ?>
         <div class="h-full container mx-auto grid grid-cols-1 md:grid-cols-3 justify-evenly">
             <div class="col-span-1 md:col-span-2 sm:flex sm:justify-center" id="posterWrapper">
                 <?php echo "<img class=\"rounded-2xl shadow-xl transition transform hover:scale-105\" src=\"" . getPoster($data->poster_path) . "\" />"; ?>
             </div>
             <div class="flex flex-col" id="movieDetails">
-                <h1 class="text-2xl mb-5"><?php echo $data->original_title ?></h1>
+                <div class="flex item-center justify-between">
+                    <h1 class="text-2xl mb-5"><?php echo $data->original_title ?></h1>
+                    <?php
+                    if (isset($_SESSION["id"])) {
+                        echo "<a href=\"/watchlist.php?media_type=movie&media_id=" . $data->id . "&watchlist=true\">Add to watchlist</a>";
+                    }
+                    ?>
+                </div>
                 <p><?php echo $data->overview ?></p>
                 <br />
                 <p>Released on <span class="font-bold"><?php echo $data->release_date ?></span></p>
@@ -124,6 +141,22 @@ function generateProvider($p)
                 echo '</div>';
             }
             ?>
+            <?php
+            if ($data->reviews->results) {
+
+                echo <<< "EOT"
+                    <div class="col-span-1 md:col-span-3 mt-12 mb-5">
+                        <h5 class="text-2xl text-center mb-5">Latest Reviews</h5>
+                        <div class="flex flex-col" id="reviewsContainer">
+                EOT;
+                foreach ($data->reviews->results as $rw)
+                    echo generateReview($rw);
+                echo <<< "EOT"
+                        </div>
+                    </div>
+                EOT;
+            }
+            ?>
         </div>
     </main>
     <?php include("../footer.php"); ?>
@@ -145,6 +178,13 @@ function generateProvider($p)
             ease: "sine",
             stagger: 0.1,
             delay: 2
+        })
+        gsap.from(document.getElementById("reviewsContainer").children, {
+            opacity: 0,
+            x: -100,
+            ease: "sine",
+            stagger: 0.5,
+            delay: 3
         })
     </script>
 </body>
